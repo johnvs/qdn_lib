@@ -55,17 +55,17 @@ QDN_DMA::QDN_DMA(QDN_SPI& spi, bool tx)
     if (spi.spi == SPI1)
     {
         dma = DMA1;
-        dmaChannel = tx?DMA1_Channel3:DMA1_Channel2;
+        dmaChannel = tx ? DMA1_Channel3 : DMA1_Channel2;
     }
     else if (spi.spi == SPI2)
     {
         dma = DMA1;
-        dmaChannel = tx?DMA1_Channel5:DMA1_Channel4;
+        dmaChannel = tx ? DMA1_Channel5 : DMA1_Channel4;
     }
     else if (spi.spi == SPI3)
     {
         dma = DMA2;
-        dmaChannel = tx?DMA2_Channel2:DMA2_Channel1;
+        dmaChannel = tx ? DMA2_Channel2 : DMA2_Channel1;
     }
     else
     {
