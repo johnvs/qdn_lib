@@ -37,7 +37,6 @@ class QDN_SPI;
 class QDN_GPIO_OutputN;
 class QDN_OutputPin;
 
-
 class QDN_DAC_MCP4822
 {
 public:
@@ -64,9 +63,8 @@ private:
 
 	uint16_t gainCommand;
 	uint16_t counts[2];
+
+	bool setPhaseEnable;
 };
-
-
-
 
 #endif

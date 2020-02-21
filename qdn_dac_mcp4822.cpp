@@ -44,8 +44,6 @@
 #define OPERATING   0x1000
 #define SHUTDOWN    0x0000
 
-
-
 static QDN_OutputPin noConnect(false);
 
 QDN_DAC_MCP4822::QDN_DAC_MCP4822(QDN_SPI& spi0, QDN_GPIO_OutputN& cs0)
@@ -55,7 +53,6 @@ QDN_DAC_MCP4822::QDN_DAC_MCP4822(QDN_SPI& spi0, QDN_GPIO_OutputN& cs0)
 	, gainCommand(GAIN_1X)
 
 {
-
 }
 
 QDN_DAC_MCP4822::QDN_DAC_MCP4822(QDN_SPI& spi0, QDN_GPIO_OutputN& cs0, QDN_OutputPin& ldac0)
@@ -63,9 +60,7 @@ QDN_DAC_MCP4822::QDN_DAC_MCP4822(QDN_SPI& spi0, QDN_GPIO_OutputN& cs0, QDN_Outpu
 	, cs(cs0)
 	, ldac(ldac0)
 	, gainCommand(GAIN_1X)
-
 {
-
 }
 
 void QDN_DAC_MCP4822::Init(void)
@@ -73,20 +68,16 @@ void QDN_DAC_MCP4822::Init(void)
 	cs.Init();
 	ldac.Init();
 	cs.Deassert();
+	setPhaseEnable = true;
 
-	spi
-		.SetClockRateShift(3)
-		.SetClockPhase(spi.ClockPhase::FirstEdge)
-//		.SetClockPhase(spi.ClockPhase::SecondEdge)
-		.Init();
+	spi.SetClockRateShift(3)
+//	   .SetClockPhase(spi.ClockPhase::FirstEdge)
+       .Init();
 
 	SetGain(Gain::Gain1X);
 	SetOutput(Channel::ChannelA,0);
 	SetOutput(Channel::ChannelB,0);
 }
-
-
-
 
 QDN_DAC_MCP4822& QDN_DAC_MCP4822::SetGain(const QDN_DAC_MCP4822::Gain gain)
 {
@@ -98,7 +89,6 @@ QDN_DAC_MCP4822& QDN_DAC_MCP4822::SetGain(const QDN_DAC_MCP4822::Gain gain)
 	}
 	return *this;
 }
-
 
 void QDN_DAC_MCP4822::WriteCommand(const uint16_t command)
 {
@@ -119,6 +109,19 @@ int16_t QDN_DAC_MCP4822::HighZ(void)
 int16_t QDN_DAC_MCP4822::SetOutput(const QDN_DAC_MCP4822::Channel channel, const uint16_t count )
 {
     uint16_t command = 0;
+
+    // Make sure the clock phase is set properly
+    if (setPhaseEnable)
+    {
+        // Disable the SPI
+        spi.Enable(false);
+
+        // Set the SPI clock polarity
+        spi.SetClockPhaseImmediate(spi.ClockPhase::FirstEdge);
+
+        // Enable the SPI
+        spi.Enable(true);
+    }
 
 	if (channel == Channel::ChannelA)
 	{

@@ -52,13 +52,15 @@ public:
 	QDN_SPI& SetClockRateShift(uint32_t prescaler0);
 	QDN_SPI& SetBitMode(uint8_t bits);
 	void Init(void);
+	void Enable(bool enable);
+	void SetClockPhaseImmediate(ClockPhase phase);
 
 	uint8_t  WriteReadU8(uint8_t byte);
 	uint16_t WriteReadU16_LE(uint16_t word);
 	uint16_t WriteReadU16_BE(uint16_t word);
 
 	void EnableDMA(void);
-        void DisableDMA(void);
+    void DisableDMA(void);
 
 private:
     friend QDN_DMA;

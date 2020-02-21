@@ -37,7 +37,6 @@ class QDN_SPI;
 class QDN_GPIO_OutputN;
 class QDN_OutputPin;
 
-
 class QDN_DAC_AD5683
 {
 public:
@@ -63,9 +62,8 @@ private:
 
 //	uint16_t gainCommand;
 	uint16_t counts_;
+
+    bool setPhaseEnable;
 };
-
-
-
 
 #endif
